@@ -4,7 +4,7 @@
   "description": "A maze game where two hamsters compete to collect more food than the other",
   "main": "hamster.html",
   "scripts": {
-    "build": "tsc && cp -r ./src/images dist/ && cp -r ./src/hamster.html dist/",
+    "build": "webpack && cp -r ./src/images dist/ && cp -r ./src/hamster.html dist/",
     "test": "jest"
   },
   "repository": {
@@ -24,7 +24,10 @@
   "homepage": "https://github.com/sky10p/HamsterMazeHtml5#readme",
   "devDependencies": {
     "jest": "^29.5.0",
-    "typescript": "^5.0.2"
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.2",
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1"
   },
   "volta": {
     "node": "18.15.0",

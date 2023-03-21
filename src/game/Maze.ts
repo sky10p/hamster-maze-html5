@@ -1,3 +1,4 @@
+import { MAZE_DIMENSION_X, MAZE_DIMENSION_Y } from "../constants/constants";
 import {
   isCellImmediatelyToBottomOf,
   isCellImmediatelyToLeftOf,
@@ -6,14 +7,15 @@ import {
 } from "../utils/cells.utils";
 import { random } from "../utils/random";
 import { Cell } from "./Cell";
-import { GameProperties, IDrawable, Position } from "./models";
+import { GameProperties, IDrawable } from "./models";
+import { Position } from "./Position";
 
 export class Maze implements IDrawable {
   dimensionX: number;
   dimensionY: number;
   visitedCells: number;
-  cellStack: Array<any>;
-  cells: Map<Position, Cell>;
+  cellStack: Array<Cell>;
+  cells: Map<string, Cell>;
   currentCell: any;
 
   constructor(dimX: number, dimY: number) {
@@ -21,37 +23,37 @@ export class Maze implements IDrawable {
     this.dimensionY = dimY;
     this.visitedCells = 1;
     this.cellStack = [];
-    this.cells = new Map<Position, Cell>();
+    this.cells = new Map<string, Cell>();
     for (let i = 0; i < this.dimensionX; i++) {
       for (let j = 0; j < this.dimensionY; j++) {
-        this.addCell(new Cell({
-            x: i,
-            y: j,
-          },{
+        this.addCell(
+          new Cell(new Position(i, j), {
             left: true,
             right: true,
             top: true,
             bottom: true,
-          }));
+          })
+        );
       }
     }
 
-
     this.currentCell = this.getCells()[random(this.cells.size)];
   }
-  public draw(graphics: CanvasRenderingContext2D, gameProperties: GameProperties) {
+  public draw(
+    graphics: CanvasRenderingContext2D,
+    gameProperties: GameProperties
+  ) {
     graphics.strokeStyle = "rgb(0,0,0)";
-        graphics.beginPath();
-        for (let i = 0; i < this.dimensionX; i++) {
-            for (let j = 0; j < this.dimensionY; j++) {
-                this.getCell({x: i, y: j}).draw(graphics, gameProperties);
-            }
-
-        }
-  };
+    graphics.beginPath();
+    for (let i = 0; i < this.dimensionX; i++) {
+      for (let j = 0; j < this.dimensionY; j++) {
+        this.getCell(new Position(i, j)).draw(graphics, gameProperties);
+      }
+    }
+  }
 
   private addCell(cell: Cell) {
-    this.cells.set(cell.position, cell);
+    this.cells.set(cell.position.hashCode(), cell);
   }
 
   public getCells(): Array<Cell> {
@@ -59,7 +61,8 @@ export class Maze implements IDrawable {
   }
 
   public getCell(position: Position): Cell {
-    const foundCell = this.cells.get(position);
+    console.log(position);
+    const foundCell = this.cells.get(position.hashCode());
     if (!foundCell) {
       throw new Error(`Cell ${position} not found`);
     }
@@ -70,65 +73,80 @@ export class Maze implements IDrawable {
   public initialize() {
     this.visitedCells = 1;
     this.cellStack = [];
-    this.cells = new Map<Position, Cell>();
-        for (let i = 0; i < this.dimensionX; i++) {
+    this.cells = new Map<string, Cell>();
+    for (let i = 0; i < this.dimensionX; i++) {
+      for (let j = 0; j < this.dimensionY; j++) {
+        this.addCell(
+          new Cell(new Position(i, j), {
+            top: true,
+            bottom: true,
+            left: true,
+            right: true,
+          })
+        );
+      }
+    }
 
-            for (let j = 0; j < this.dimensionY; j++) {
-              this.addCell(new Cell({x: i, y: j}, {top: true, bottom: true, left: true, right: true}));
-            }
-        }
-
-        this.currentCell = this.getCells()[random(this.cells.size)];
+    this.currentCell = this.getCells()[random(this.cells.size)];
   }
 
   private getAdjacentCells(position: Position): Array<Cell> {
     const foundAdjacentCells: Cell[] = [];
-    if(this.getCell({x: position.x, y: position.y+1}).isIntact() == true){
-      foundAdjacentCells.push(this.getCell({x: position.x, y: position.y+1}));
+    if (
+      position.y + 1 < MAZE_DIMENSION_Y &&
+      this.getCell(new Position(position.x, position.y + 1)).isIntact() == true
+    ) {
+      foundAdjacentCells.push(
+        this.getCell(new Position(position.x, position.y + 1))
+      );
     }
 
-    if(this.getCell({x: position.x + 1, y: position.y}).isIntact() == true){
-      foundAdjacentCells.push(this.getCell({x: position.x + 1, y: position.y}))
+    if (
+      position.x + 1 < MAZE_DIMENSION_X &&
+      this.getCell(new Position(position.x + 1, position.y)).isIntact() == true
+    ) {
+      foundAdjacentCells.push(
+        this.getCell(new Position(position.x + 1, position.y))
+      );
     }
 
-    if(this.getCell({x: position.x, y: position.y-1}).isIntact() == true){
-      foundAdjacentCells.push(this.getCell({x: position.x, y: position.y-1}));
+    if (
+      position.y - 1 >= 0 &&
+      this.getCell(new Position(position.x, position.y - 1)).isIntact() == true
+    ) {
+      foundAdjacentCells.push(
+        this.getCell(new Position(position.x, position.y - 1))
+      );
     }
-    
 
-      if(this.getCell({x: position.x-1, y: position.y}).isIntact() == true){
-        foundAdjacentCells.push(this.getCell({x: position.x-1, y: position.y}));
-    
+    if (
+      position.x - 1 >= 0 &&
+      this.getCell(new Position(position.x - 1, position.y)).isIntact() == true
+    ) {
+      foundAdjacentCells.push(
+        this.getCell(new Position(position.x - 1, position.y))
+      );
+    }
+
+    return foundAdjacentCells;
   }
-
-  return foundAdjacentCells;
-}
 
   public generate() {
     while (this.visitedCells < this.cells.size) {
-
       const adjacentCells = this.getAdjacentCells(this.currentCell.position);
 
       if (adjacentCells.length > 0) {
-          const auxCell = adjacentCells[random(this.getAdjacentCells.length)];
+        const auxCell = adjacentCells[random(this.getAdjacentCells.length)];
 
+        this.breakWall(this.currentCell, auxCell);
 
-          this.breakWall(this.currentCell, auxCell);
-
-
-
-          this.cellStack.push(this.currentCell);
-          this.currentCell = auxCell;
-          this.visitedCells++;
+        this.cellStack.push(this.currentCell);
+        this.currentCell = auxCell;
+        this.visitedCells++;
+      } else {
+        this.currentCell = this.cellStack.pop();
       }
-      else {
-          this.cellStack = this.cellStack.pop();
-
-      }
-
-
-
-  }
+    }
   }
 
   public breakWall = (cell1: Cell, cell2: Cell) => {

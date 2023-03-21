@@ -1,5 +1,6 @@
 import { CELL_SIZE, MARGIN_LEFT, MARGIN_TOP } from "../constants/constants";
-import { GameProperties, IDrawable, Position } from "./models";
+import { GameProperties, IDrawable } from "./models";
+import { Position } from "./Position";
 
 export type Walls = {
   top: boolean;

@@ -108,15 +108,9 @@ export class Game implements IDrawable {
       this.maze.dimensionY
     );
 
-    this.maze.getCell({
-      x: this.gameProperties.player1Properties.position.x,
-      y: this.gameProperties.player1Properties.position.y,
-    }).state = "PLAYER_1";
+    this.maze.getCell(this.gameProperties.player1Properties.position).state = "PLAYER_1";
 
-    this.maze.getCell({
-      x: this.gameProperties.player2Properties.position.x,
-      y: this.gameProperties.player2Properties.position.y,
-    }).state = "PLAYER_2";
+    this.maze.getCell(this.gameProperties.player2Properties.position).state = "PLAYER_2";
 
     setTimeout(() => this.addRandomSprite, 1000);
     this.run();
@@ -128,18 +122,13 @@ export class Game implements IDrawable {
     this.gameProperties.player2Properties.position.x = random(MAZE_DIMENSION_X);
     this.gameProperties.player2Properties.position.y = random(MAZE_DIMENSION_Y);
 
-    this.maze.getCell({
-      x: this.gameProperties.player1Properties.position.x,
-      y: this.gameProperties.player1Properties.position.y,
-    }).state = "PLAYER_1";
-    this.maze.getCell({
-      x: this.gameProperties.player2Properties.position.x,
-      y: this.gameProperties.player2Properties.position.y,
-    }).state = "PLAYER_2";
+    this.maze.getCell(this.gameProperties.player1Properties.position).state = "PLAYER_1";
+
+    this.maze.getCell(this.gameProperties.player2Properties.position).state = "PLAYER_2";
   }
 
   addRandomSprite() {
-    setTimeout(this.addRandomSprite, 1000 + random(9000));
+    setTimeout(this.addRandomSprite.bind(this), 1000 + random(9000));
 
     if (this.sprites.length < MAX_SPRITES) {
       this.sprites.push(new Sprite(MAZE_DIMENSION_X, MAZE_DIMENSION_Y));
@@ -147,7 +136,7 @@ export class Game implements IDrawable {
   }
 
   run() {
-    setTimeout(this.run, 50);
+    setTimeout(this.run.bind(this), 50);
     if (this.isGameStarted) {
       this.canvas.style.background = "#BFCCF0 url(images/Jaula.png)";
 

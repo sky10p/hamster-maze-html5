@@ -1,5 +1,6 @@
 import { Game } from "./Game";
 import { GameProperties } from "./models";
+import { Position } from "./Position";
 
 export const initGame = () => {
 
@@ -14,13 +15,13 @@ export const initGame = () => {
             score: 0,
             sprite: spritePlayer1,
             wallsCanJump: 0,
-            position: {x: 0,y:0}
+            position: new Position(0,0)
         },
         player2Properties: {
             score: 0,
             sprite: spritePlayer2,
             wallsCanJump: 0,
-            position: {x: 0,y:0}
+            position: new Position(0,0)
         }
     }
 

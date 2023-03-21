@@ -1,7 +1,4 @@
-export type Position = {
-    x: number,
-    y: number
-}
+import { Position } from "./Position";
 
 export type Movement = 'TOP' | 'BOTTOM' | 'LEFT' | 'RIGHT'
 
