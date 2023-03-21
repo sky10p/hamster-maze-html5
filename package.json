@@ -1,0 +1,33 @@
+{
+  "name": "hamster-maze-html5",
+  "version": "1.0.0",
+  "description": "A maze game where two hamsters compete to collect more food than the other",
+  "main": "hamster.html",
+  "scripts": {
+    "build": "tsc && cp -r ./src/images dist/ && cp -r ./src/hamster.html dist/",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sky10p/HamsterMazeHtml5.git"
+  },
+  "keywords": [
+    "maze",
+    "game",
+    "html5"
+  ],
+  "author": "Pablo Guijarro Ramírez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sky10p/HamsterMazeHtml5/issues"
+  },
+  "homepage": "https://github.com/sky10p/HamsterMazeHtml5#readme",
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "typescript": "^5.0.2"
+  },
+  "volta": {
+    "node": "18.15.0",
+    "yarn": "3.5.0"
+  }
+}

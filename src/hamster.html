@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>prueba</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+<script>
+    require(['hamster'], function(Hamster) {
+      Hamster.init();
+    });
+  </script>
+  
+</head>
+<body>
+<canvas id="canvas" width="850" height="450" style="border: 1px solid rgb(0, 0, 0); background-image: url(images/JaulaSinAlpha.png); background-color: rgb(242, 252, 240); background-position: initial initial; background-repeat: initial initial;">
+    Tu navegador no soporta canvas
+    </canvas>
+    <input type="button" id="btnEmpezar" onclick="initGame()" value="Volver a Empezar">
+</body>
+</html>
+

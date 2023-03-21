@@ -1,0 +1,1 @@
+export {initGame} from "./initGame";
