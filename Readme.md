@@ -1,4 +1,4 @@
-# Hamseter Maze HTML5 Game
+# Hamster Maze HTML5 Game
 
 This project, "hamster-maze-html5", is a simple, yet fun, maze game implemented in TypeScript and HTML5 using the canvas API. The game features two hamsters competing to collect more fruits than the other player within the maze. In addition to fruits, a special wheel can appear that allows the hamster to temporarily pass through walls.
 
