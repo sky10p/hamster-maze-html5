@@ -121,7 +121,7 @@ export class Game implements IDrawable {
   }
 
   start(){
-    this.init();
+    
     this.isGameStarted = true;
   }
 
