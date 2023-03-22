@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/sky10p/HamsterMazeHtml5#readme",
   "devDependencies": {
+    "@types/jest": "^29.5.0",
     "jest": "^29.5.0",
+    "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.2",
     "webpack": "^5.76.2",

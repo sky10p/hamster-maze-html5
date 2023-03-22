@@ -4,10 +4,11 @@ import { Position } from "./Position";
 export const registerKeyLoggers = (game: Game) => {
     document.addEventListener('keydown', function(evt) {
         const lastKey = evt.keyCode;
-    
+        const maze = game.maze;
+        const player1 = game.gameProperties.player1Properties;
+        const player2 = game.gameProperties.player2Properties;
         if (game.isGameStarted == true) {
-            const maze = game.maze;
-            const player1 = game.gameProperties.player1Properties;
+            
             if (lastKey == 38 && (maze.getCell(player1.position).walls.top == false || player1.wallsCanJump > 0)) { //Arriba
                 player1.movement = "TOP";
     
@@ -95,98 +96,97 @@ export const registerKeyLoggers = (game: Game) => {
     
             }
             // 87w 65a 83s 68d
-            if (lastKey == 87 && (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).N == 0 || paredes2 > 0)) { //Arriba
-                movimientoPLAYER_2 = "ARRIBA";
+            
+            if (lastKey == 87 && (maze.getCell(player2.position).walls.top == false || player2.wallsCanJump > 0)) { //Arriba
+                player2.movement = "TOP";
     
-                if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y - 1).state != "PLAYER_1") {
-                    if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state != "BOTH")
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
+                if (maze.getCell(new Position(player2.position.x, player2.position.y-1)).state != "PLAYER_1") {
+                    if (maze.getCell(player2.position).state != "BOTH")
+                        maze.getCell(player2.position).state = "EMPTY";
                     else
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "PLAYER_1";
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y - 1).state = "PLAYER_2";
+                        maze.getCell(player2.position).state = "PLAYER_1";
+                    maze.getCell(new Position(player2.position.x, player2.position.y-1)).state = "PLAYER_2";
     
                 }
                 else {
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y - 1).state = "BOTH";
+                    maze.getCell(player2.position).state = "EMPTY";
+                    maze.getCell(new Position(player2.position.x, player2.position.y-1)).state = "BOTH";
     
                 }
-                if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).N == 1)
-                    paredes2--;
-                PLAYER_2y--;
+                if (maze.getCell(player2.position).walls.top == true)
+                    player2.wallsCanJump--;
+                player2.position.y--;
             }
     
     
     
-            if (lastKey == 68 && (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).E == 0 || paredes2 > 0)) { //Derecha
-                movimientoPLAYER_2 = "DERECHA";
-                if (celdas.getCeldaAt(PLAYER_2x + 1, PLAYER_2y).state != "PLAYER_1") {
-                    if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state != "BOTH")
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
+            if (lastKey == 68 && (maze.getCell(player2.position).walls.right == false || player2.wallsCanJump > 0)) { //Derecha
+                player2.movement = "RIGHT";
+                if (maze.getCell(new Position(player2.position.x+1, player2.position.y)).state != "PLAYER_1") {
+                    if (maze.getCell(player2.position).state != "BOTH")
+                        maze.getCell(player2.position).state = "EMPTY";
                     else
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "PLAYER_1";
-                    celdas.getCeldaAt(PLAYER_2x + 1, PLAYER_2y).state = "PLAYER_2";
+                        maze.getCell(player2.position).state = "PLAYER_1";
+                    maze.getCell(new Position(player2.position.x+1, player2.position.y)).state = "PLAYER_2";
     
                 }
                 else {
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
-                    celdas.getCeldaAt(PLAYER_2x + 1, PLAYER_2y).state = "BOTH";
+                    maze.getCell(player2.position).state = "EMPTY";
+                    maze.getCell(new Position(player2.position.x+1, player2.position.y)).state = "BOTH";
     
                 }
-                if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).E == 1)
-                    paredes2--;
-                PLAYER_2x++;
+                if (maze.getCell(player2.position).walls.right == true)
+                    player2.wallsCanJump--;
+                player2.position.x++;
             }
-            if (lastKey == 83 && (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).walls.bottom == 0 || paredes2 > 0)) { //Abajo
-                movimientoPLAYER_2 = "BOTTOM";
-                if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y + 1).state != "PLAYER_1") {
-                    if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state != "BOTH")
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
+            if (lastKey == 83 && (maze.getCell(player2.position).walls.bottom == false || player2.wallsCanJump > 0)) { //Abajo
+                player2.movement = "BOTTOM";
+                if (maze.getCell(new Position(player2.position.x, player2.position.y+1)).state != "PLAYER_1") {
+                    if (maze.getCell(player2.position).state != "BOTH")
+                        maze.getCell(player2.position).state = "EMPTY";
                     else
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "PLAYER_1";
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y + 1).state = "PLAYER_2";
+                        maze.getCell(player2.position).state = "PLAYER_1";
+                    maze.getCell(new Position(player2.position.x, player2.position.y+1)).state = "PLAYER_2";
     
                 }
                 else {
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y + 1).state = "BOTH";
+                    maze.getCell(player2.position).state = "EMPTY";
+                    maze.getCell(new Position(player2.position.x, player2.position.y+1)).state = "BOTH";
     
                 }
-                if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).walls.bottom == 1)
-                    paredes2--;
-                PLAYER_2y++;
+                if (maze.getCell(player2.position).walls.bottom == true)
+                    player2.wallsCanJump--;
+                player2.position.y++;
     
             }
-            if (lastKey == 65 && (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).O == 0 || paredes2 > 0)) { //Izquierda
-                movimientoPLAYER_2 = "LEFT";
-                if (celdas.getCeldaAt(PLAYER_2x - 1, PLAYER_2y).state != "PLAYER_1") {
-                    if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state != "BOTH")
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
+            if (lastKey == 65 && (maze.getCell(player2.position).walls.left == false || player2.wallsCanJump > 0)) { //Izquierda
+                player2.movement = "LEFT";
+                if (maze.getCell(new Position(player2.position.x-1, player2.position.y)).state != "PLAYER_1") {
+                    if (maze.getCell(player2.position).state != "BOTH")
+                        maze.getCell(player2.position).state = "EMPTY";
                     else
-                        celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "PLAYER_1";
-                    celdas.getCeldaAt(PLAYER_2x - 1, PLAYER_2y).state = "PLAYER_2";
+                        maze.getCell(player2.position).state = "PLAYER_1";
+                    maze.getCell(new Position(player2.position.x-1, player2.position.y)).state = "PLAYER_2";
     
                 }
                 else {
-                    celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).state = "EMPTY";
-                    celdas.getCeldaAt(PLAYER_2x - 1, PLAYER_2y).state = "BOTH";
+                    maze.getCell(player2.position).state = "EMPTY";
+                    maze.getCell(new Position(player2.position.x-1, player2.position.y)).state = "BOTH";
     
                 }
-                if (celdas.getCeldaAt(PLAYER_2x, PLAYER_2y).O == 1)
-                    paredes2--;
-                PLAYER_2x--;
+                if (maze.getCell(player2.position).walls.left == true)
+                    player2.wallsCanJump--;
+                player2.position.x--;
     
             }
         }
     
         if (lastKey == 13) { //Enter
-            PartidaEmpezada = true;
-    
-            lastKey = null;
+            game.isGameStarted = true;
         }
     
         if (lastKey == 90) {
-            paredes2 += 10;
+            player2.wallsCanJump += 10;
         }
     
         if (lastKey == 107) {

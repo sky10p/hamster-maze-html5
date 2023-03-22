@@ -25,6 +25,10 @@ export class Cell implements IDrawable {
     return (this.walls.top == true && this.walls.bottom == true && this.walls.right == true && this.walls.left == true);
   }
 
+  validateWalls(): boolean {
+    return !this.isIntact();
+  }
+
   draw(graphics: CanvasRenderingContext2D, gameProperties: GameProperties) {
     if (this.walls.top === true) {
       graphics.moveTo(

@@ -1,4 +1,3 @@
-import { MAZE_DIMENSION_X, MAZE_DIMENSION_Y } from "../constants/constants";
 import {
   isCellImmediatelyToBottomOf,
   isCellImmediatelyToLeftOf,
@@ -24,20 +23,7 @@ export class Maze implements IDrawable {
     this.visitedCells = 1;
     this.cellStack = [];
     this.cells = new Map<string, Cell>();
-    for (let i = 0; i < this.dimensionX; i++) {
-      for (let j = 0; j < this.dimensionY; j++) {
-        this.addCell(
-          new Cell(new Position(i, j), {
-            left: true,
-            right: true,
-            top: true,
-            bottom: true,
-          })
-        );
-      }
-    }
-
-    this.currentCell = this.getCells()[random(this.cells.size)];
+    this.initialize()
   }
   public draw(
     graphics: CanvasRenderingContext2D,
@@ -61,7 +47,6 @@ export class Maze implements IDrawable {
   }
 
   public getCell(position: Position): Cell {
-    console.log(position);
     const foundCell = this.cells.get(position.hashCode());
     if (!foundCell) {
       throw new Error(`Cell ${position} not found`);
@@ -90,10 +75,11 @@ export class Maze implements IDrawable {
     this.currentCell = this.getCells()[random(this.cells.size)];
   }
 
-  private getAdjacentCells(position: Position): Array<Cell> {
+  public getAdjacentCells(position: Position): Array<Cell> {
     const foundAdjacentCells: Cell[] = [];
+
     if (
-      position.y + 1 < MAZE_DIMENSION_Y &&
+      position.y + 1 < this.dimensionY &&
       this.getCell(new Position(position.x, position.y + 1)).isIntact() == true
     ) {
       foundAdjacentCells.push(
@@ -102,7 +88,7 @@ export class Maze implements IDrawable {
     }
 
     if (
-      position.x + 1 < MAZE_DIMENSION_X &&
+      position.x + 1 < this.dimensionX &&
       this.getCell(new Position(position.x + 1, position.y)).isIntact() == true
     ) {
       foundAdjacentCells.push(
@@ -134,10 +120,8 @@ export class Maze implements IDrawable {
   public generate() {
     while (this.visitedCells < this.cells.size) {
       const adjacentCells = this.getAdjacentCells(this.currentCell.position);
-
       if (adjacentCells.length > 0) {
-        const auxCell = adjacentCells[random(this.getAdjacentCells.length)];
-
+        const auxCell = adjacentCells[random(adjacentCells.length)];
         this.breakWall(this.currentCell, auxCell);
 
         this.cellStack.push(this.currentCell);

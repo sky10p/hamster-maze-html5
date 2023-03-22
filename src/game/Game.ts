@@ -95,28 +95,13 @@ export class Game implements IDrawable {
     this.maze.initialize();
     this.maze.generate();
 
-    this.gameProperties.player1Properties.position.x = random(
-      this.maze.dimensionX
-    );
-    this.gameProperties.player1Properties.position.y = random(
-      this.maze.dimensionY
-    );
-    this.gameProperties.player2Properties.position.x = random(
-      this.maze.dimensionX
-    );
-    this.gameProperties.player2Properties.position.y = random(
-      this.maze.dimensionY
-    );
-
-    this.maze.getCell(this.gameProperties.player1Properties.position).state = "PLAYER_1";
-
-    this.maze.getCell(this.gameProperties.player2Properties.position).state = "PLAYER_2";
+    this.initializePlayers();
 
     setTimeout(() => this.addRandomSprite, 1000);
     this.run();
   }
 
-  start() {
+  initializePlayers() {
     this.gameProperties.player1Properties.position.x = random(MAZE_DIMENSION_X);
     this.gameProperties.player1Properties.position.y = random(MAZE_DIMENSION_Y);
     this.gameProperties.player2Properties.position.x = random(MAZE_DIMENSION_X);
@@ -133,6 +118,11 @@ export class Game implements IDrawable {
     if (this.sprites.length < MAX_SPRITES) {
       this.sprites.push(new Sprite(MAZE_DIMENSION_X, MAZE_DIMENSION_Y));
     }
+  }
+
+  start(){
+    this.init();
+    this.isGameStarted = true;
   }
 
   run() {
